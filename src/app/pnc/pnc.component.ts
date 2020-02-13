@@ -41,7 +41,7 @@ export class PncComponent implements OnInit {
   };
 
   constructor( public sanitizer: DomSanitizer, private httpClient: HttpClient,  private readonly router: Router,
-               private globalVariablesService: GlobalVariablesService) {
+               public globalVariablesService: GlobalVariablesService) {
   }
 
   ngOnInit() {
