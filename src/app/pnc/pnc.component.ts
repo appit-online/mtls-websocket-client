@@ -144,9 +144,9 @@ export class PncComponent implements OnInit {
   "${Date.now()}",
   "Authorize",
   {
-    "idTag": "1223",
+    "idTag": "123",
     "idToken": {
-        "idToken": "1223",
+        "idToken": "123",
         "type": "eMAID",
         "additionalInfo": [{
             "additionalIdToken": "not_used",
@@ -194,7 +194,7 @@ export class PncComponent implements OnInit {
   {
     "status": "NotFound"
    }
-]]`;
+]`;
         break;
 
       case 'exiRequest':
