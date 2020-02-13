@@ -1,0 +1,15 @@
+@import 'themes';
+
+@import '~@nebular/theme/styles/globals';
+@import '~@nebular/theme/styles/prebuilt/dark';
+@import '~@nebular/theme/styles/prebuilt/default';
+@import '~@nebular/theme/styles/prebuilt/cosmic';
+@import '~@nebular/theme/styles/prebuilt/corporate';
+@import '~@nebular/auth/styles/all';
+@import '~@nebular/bootstrap/styles/globals';
+
+@include nb-install() {
+  @include nb-theme-global();
+  @include nb-auth-global();
+};
+/* You can add global styles to this file, and also import other style files */

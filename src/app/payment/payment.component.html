@@ -1,0 +1,24 @@
+<nb-card>
+  <nb-list>
+    <nb-list-item *ngFor="let payment of payments" (click)="selectPackage(payment)">
+      <nb-user [picture]="payment.image"  badgeText="{{payment.price}} €" badgeStatus="primary"
+               size="giant" badgePosition="bottom end" [name]="payment.price + '€ Donation'" >
+      </nb-user>
+      <nb-icon *ngIf="selectedPackage == payment" style="float:right; color:rgb(52, 55, 196); margin-left: auto; margin-right: 10px;" icon="star"></nb-icon>
+    </nb-list-item>
+    <nb-list-item>
+      <div class="title h6">
+        You need different payment information - Contact us: (  <a href="mailto:support@appit-online.de">support@appit-online.de</a>)
+      </div>
+    </nb-list-item>
+  </nb-list>
+</nb-card>
+
+
+<div class="row" >
+  <div class="offset-3 col-md-6">
+    <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+  </div>
+</div>
+
+

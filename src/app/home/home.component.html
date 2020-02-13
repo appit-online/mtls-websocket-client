@@ -1,0 +1,117 @@
+<nb-card>
+  <nb-card-header>
+    <div class="h6">
+      WebSocket Client
+      <button (click)="clearAll()" style="float: right;" nbButton status="primary" ><nb-icon icon="trash-outline"></nb-icon> {{clearBtnTitle}}</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-card>
+      <nb-card-body>
+        <div class="row" >
+          <div class="col-md-10">
+            <input [disabled]="this.globalVariablesService.connected" class="input-col" type="text" [(ngModel)]="this.globalVariablesService.connectionUrl" placeholder="wss://mtls.url.de/connect/device" nbInput fullWidth shape="rectangle">
+            <iframe style="display: none" [src]="sanitizer.bypassSecurityTrustResourceUrl(this.globalVariablesService.connectionUrl.replace('wss', 'https'))"></iframe>
+          </div>
+          <div class="col-md-2">
+            <button (click)="connect()" style="float: right;" nbButton status="primary" fullWidth><nb-icon icon="flash-outline"></nb-icon> {{connectBtnTitle}}</button>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="h6">
+      WebSocket Client Request
+      <div class="row" >
+        <div class="col-md-10">
+        </div>
+        <div class="col-md-2">
+          <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+        </div>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+      <div class="row" >
+        <div class="col-md-12">
+          <div ace-editor [(text)]="reqBodyContent"
+               [mode]="'json'"
+               [theme]="theme"
+               [options]="options"
+               [readOnly]="false"
+               style="min-height: 250px; width:100%; overflow: auto;"></div>
+        </div>
+      </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="h6">
+      WebSocket Client Responses
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row" >
+      <div class="col-md-12">
+        <div ace-editor [(text)]="responseBodyText"
+             [mode]="'json'"
+             [theme]="theme"
+             [options]="options"
+             [readOnly]="true"
+             style="min-height: 250px; width:100%; overflow: auto;"></div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="h6">
+      History
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row" >
+      <div class="col-md-12">
+        <div ace-editor [(text)]="sessionLogText"
+             [mode]="'html'"
+             [theme]="theme"
+             [options]="options"
+             [readOnly]="true"
+             style="min-height: 250px; width:100%; overflow: auto;"></div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>
+        <div class="h6">
+          mututal TLS
+        </div>
+
+        <div class="text-hint" style="margin-top:10px">
+          Install client certificate to your browser or keychain and enter your <u>wss</u> address for mutual TLS<br/>
+          The browser will challenge you automatically<br/>
+          Connect to websocket
+        </div>
+      </nb-card-header>
+      <nb-card-header>
+        <div class="h6">
+          Basic Authentication
+        </div>
+
+        <div class="text-hint" style="margin-top:10px">
+          Add credentials to your url e.g. wss://username:password@url/connect
+        </div>
+      </nb-card-header>
+    </nb-card>
+  </div>
+</div>

@@ -1,0 +1,841 @@
+<nb-card>
+  <nb-card-header>
+    <div class="h6">
+      WebSocket Client
+      <button (click)="clearAll()" style="float: right;" nbButton status="primary" ><nb-icon icon="trash-outline"></nb-icon> {{clearBtnTitle}}</button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <nb-card>
+      <nb-card-body>
+        <div class="row" >
+          <div class="col-md-10">
+            <input [disabled]="this.globalVariablesService.connected" class="input-col" type="text" [(ngModel)]="this.globalVariablesService.connectionUrl" placeholder="wss://mtls.url.de/connect/device" nbInput fullWidth shape="rectangle">
+            <iframe style="display: none" [src]="sanitizer.bypassSecurityTrustResourceUrl(this.globalVariablesService.connectionUrl.replace('wss', 'https'))"></iframe>
+          </div>
+          <div class="col-md-2">
+            <button (click)="connect()" style="float: right;" nbButton status="primary" fullWidth><nb-icon icon="flash-outline"></nb-icon> {{connectBtnTitle}}</button>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-body>
+    <nb-tabset>
+      <nb-tab tabTitle="Client Certificate">
+        <!-- use case 1-->
+        <nb-card style="margin-top: 25px;">
+          <nb-card-body>
+            <nb-stepper orientation="horizontal">
+              <nb-step [label]="labelOne">
+                <ng-template #labelOne>First step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point received a extended trigger message</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify ExtendedTriggerMessage (SignChargePointCertificate)
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton disabled nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelTwo">
+                <ng-template #labelTwo>Second step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point creates response</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('response_accepted')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Accepted</button>
+                      <br/>
+                      <br/>
+                      <button (click)="setTemplate('response_not_implemented')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - NotImplemented</button>
+                      <br/>
+                      <br/>
+                      <button (click)="setTemplate('response_rejected')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Rejected</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelThree">
+                <ng-template #labelThree>Third step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends response to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelfour">
+                <ng-template #labelfour>Fourth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point creates a CSR</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('csms_csr')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton disabled nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelFive">
+                <ng-template #labelFive>Fivth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends request to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelSix">
+                <ng-template #labelSix>Sixth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>The backend provides a response</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify result (Accepted, Rejected)
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelSeven">
+                <ng-template #labelSeven>Seventh step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>The backend provides a new client certificate</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify cert result
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelEight">
+                <ng-template #labelEight>Eigth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>The charge point creates response for certificate</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('response_accepted')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Accepted</button>
+                      <br/>
+                      <br/>
+                      <button (click)="setTemplate('response_rejected')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Rejected</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelNine">
+                <ng-template #labelNine>Ninth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends response to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton disabled nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+            </nb-stepper>
+          </nb-card-body>
+        </nb-card>
+      </nb-tab>
+      <nb-tab tabTitle="Leaf Certificate">
+        <!-- use case 3-->
+        <nb-card style="margin-top: 25px;">
+          <nb-card-body>
+            <nb-stepper orientation="horizontal">
+              <nb-step [label]="labelOne">
+                <ng-template #labelOne>First step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point received a trigger message</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify TriggerMessage (SignV2GCertificate)
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton disabled nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelTwo">
+                <ng-template #labelTwo>Second step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point creates response</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('response_accepted')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Accepted</button>
+                      <br/>
+                      <br/>
+                      <button (click)="setTemplate('response_not_implemented')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - NotImplemented</button>
+                      <br/>
+                      <br/>
+                      <button (click)="setTemplate('response_rejected')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Rejected</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelThree">
+                <ng-template #labelThree>Third step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends response to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelfour">
+                <ng-template #labelfour>Fourth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point creates a CSR</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('leaf_csr')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton disabled nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelFive">
+                <ng-template #labelFive>Fivth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends request to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelSix">
+                <ng-template #labelSix>Sixth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>The backend provides a response</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify result (Accepted, Rejected)
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelSeven">
+                <ng-template #labelSeven>Seventh step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>The backend provides a new leaf certificate</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify cert result
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelEight">
+                <ng-template #labelEight>Eigth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>The charge point creates response for certificate</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('response_accepted')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Accepted</button>
+                      <br/>
+                      <br/>
+                      <button (click)="setTemplate('response_rejected')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Rejected</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelNine">
+                <ng-template #labelNine>Ninth step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends response to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton disabled nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+            </nb-stepper>
+          </nb-card-body>
+        </nb-card>      </nb-tab>
+      <nb-tab tabTitle="Request Truststore">
+        <!-- use case 2-->
+        <nb-card style="margin-top: 25px;">
+          <nb-card-body>
+            <nb-stepper orientation="horizontal">
+              <nb-step [label]="labelOne">
+                <ng-template #labelOne>First step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point receives request for installed certificates in trust store</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify GetInstalledCertificateIds request received
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton disabled nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelTwo">
+                <ng-template #labelTwo>Second step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point creates response</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('truststore_response')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message</button>
+                      <br/>
+                      <br/>
+                      <button (click)="setTemplate('truststore_response_notfound')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Not Found</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelThree">
+                <ng-template #labelThree>Third step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends response to backend - Repeat for each request</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button disabled nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+            </nb-stepper>
+          </nb-card-body>
+        </nb-card>      </nb-tab>
+      <nb-tab tabTitle="Install Truststore">
+        <!-- use case 2-->
+        <nb-card style="margin-top: 25px;">
+          <nb-card-body>
+            <nb-stepper orientation="horizontal">
+              <nb-step [label]="labelOne">
+                <ng-template #labelOne>First step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point receives request for install certificate in trust store</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify InstallCertificate request received
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton disabled nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelTwo">
+                <ng-template #labelTwo>Second step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point creates response</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('response_accepted')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Accepted</button>
+                      <br/>
+                      <br/>
+                      <button (click)="setTemplate('response_failed')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message - Failed</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelThree">
+                <ng-template #labelThree>Third step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends response to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button disabled nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+            </nb-stepper>
+          </nb-card-body>
+        </nb-card>      </nb-tab>
+      <nb-tab tabTitle="Update Vehicle Certificate">
+        <!-- use case 4-->
+        <nb-card style="margin-top: 25px;">
+          <nb-card-body>
+            <nb-stepper orientation="horizontal">
+              <nb-step [label]="labelOne">
+                <ng-template #labelOne>First step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point receives exi request from vehicle</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('exiRequest')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton disabled nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelTwo">
+                <ng-template #labelTwo>Second step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends exi request to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelThree">
+                <ng-template #labelThree>Third step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>The backend provides a new certificate for the vehicle</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify result (Accepted, Failed)
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button disabled nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+            </nb-stepper>
+          </nb-card-body>
+        </nb-card>      </nb-tab>
+      <nb-tab tabTitle="Authorize Charging process">
+        <!-- use case 5-->
+        <nb-card style="margin-top: 25px;">
+          <nb-card-body>
+            <nb-stepper orientation="horizontal">
+              <nb-step [label]="labelOne">
+                <ng-template #labelOne>First step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point creates authorize request</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="setTemplate('authorize')" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>Add charge point message</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton disabled nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelTwo">
+                <ng-template #labelTwo>Second step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>Charge point sends authorize request to backend</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <button (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+              <nb-step [label]="labelThree">
+                <ng-template #labelThree>Third step</ng-template>
+                <div class="row">
+                  <nb-card class="col-md-12" style="align-items: center;">
+                    <nb-card-header>
+                      <h4>The backend provides a response for authorize request</h4>
+                    </nb-card-header>
+                    <nb-card-body>
+                      <p class="lorem">
+                        Verify result (Accepted, Blocked)
+                      </p>
+                    </nb-card-body>
+                  </nb-card>
+                </div>
+                <div class="row">
+                  <div class="col-md-11">
+                    <button nbButton nbStepperPrevious>prev</button>
+                  </div>
+                  <div class="col-md-1">
+                    <button disabled nbButton nbStepperNext>next</button>
+                  </div>
+                </div>
+              </nb-step>
+            </nb-stepper>
+          </nb-card-body>
+        </nb-card>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="h6">
+      WebSocket Client Request
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+      <div class="row">
+        <div class="col-md-12">
+          <div ace-editor [(text)]="reqBodyContent"
+               [mode]="'json'"
+               [theme]="theme"
+               [options]="options"
+               [readOnly]="false"
+               style="min-height: 250px; width:100%; overflow: auto;"></div>
+        </div>
+      </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="h6">
+      Last WebSocket Client Response
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row" >
+      <div class="col-md-12">
+        <div ace-editor [(text)]="responseBodyText"
+             [mode]="'json'"
+             [theme]="theme"
+             [options]="options"
+             [readOnly]="true"
+             style="min-height: 250px; width:100%; overflow: auto;"></div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<nb-card>
+  <nb-card-header>
+    <div class="h6">
+      History
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row" >
+      <div class="col-md-12">
+        <div ace-editor [(text)]="sessionLogText"
+             [mode]="'html'"
+             [theme]="theme"
+             [options]="options"
+             [readOnly]="true"
+             style="min-height: 250px; width:100%; overflow: auto;"></div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>
+
+<div class="row">
+  <div class="col-md-12">
+    <nb-card>
+      <nb-card-header>
+        <div class="h6">
+          mututal TLS
+        </div>
+
+        <div class="text-hint" style="margin-top:10px">
+          Install client certificate to your browser or keychain and enter your <u>wss</u> address for mutual TLS<br/>
+          The browser will challenge you automatically<br/>
+          Connect to websocket
+        </div>
+      </nb-card-header>
+      <nb-card-header>
+        <div class="h6">
+          Basic Authentication
+        </div>
+
+        <div class="text-hint" style="margin-top:10px">
+          Add credentials to your url e.g. wss://username:password@url/connect
+        </div>
+      </nb-card-header>
+    </nb-card>
+  </div>
+</div>
