@@ -756,32 +756,26 @@
 <nb-card>
   <nb-card-header>
     <div class="h6">
-      WebSocket Client Request
-    </div>
-  </nb-card-header>
-  <nb-card-body>
-      <div class="row">
-        <div class="col-md-12">
-          <div ace-editor [(text)]="reqBodyContent"
-               [mode]="'json'"
-               [theme]="theme"
-               [options]="options"
-               [readOnly]="false"
-               style="min-height: 250px; width:100%; overflow: auto;"></div>
-        </div>
-      </div>
-  </nb-card-body>
-</nb-card>
-
-<nb-card>
-  <nb-card-header>
-    <div class="h6">
-      Last WebSocket Client Response
+      WebSocket Client
     </div>
   </nb-card-header>
   <nb-card-body>
     <div class="row" >
-      <div class="col-md-12">
+      <div class="col-md-6">
+        <div class="h6">
+          Request
+        </div>
+        <div ace-editor [(text)]="reqBodyContent"
+             [mode]="'json'"
+             [theme]="theme"
+             [options]="options"
+             [readOnly]="false"
+             style="min-height: 250px; width:100%; overflow: auto;"></div>
+      </div>
+      <div class="col-md-6">
+        <div class="h6">
+          Response
+        </div>
         <div ace-editor [(text)]="responseBodyText"
              [mode]="'json'"
              [theme]="theme"
