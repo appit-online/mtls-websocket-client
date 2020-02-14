@@ -26,7 +26,217 @@ export class PncComponent implements OnInit {
   sendBtnTitle = 'Send';
 
   ws = null;
-  selectedUseCase;
+  usecases = [{
+    name: 'client certificate',
+    steps: [{
+      title: 'Charge point has received an extended trigger message',
+      todo: 'Verify ExtendedTriggerMessage (SignChargePointCertificate)',
+    }, {
+      title: 'Charge point creates response',
+      buttons: [
+        {
+          title: 'Accepted',
+          template: 'response_accepted'
+        },
+        {
+          title: 'Not Implemented',
+          template: 'response_not_implemented'
+        },
+        {
+          title: 'Rejected',
+          template: 'response_rejected'
+        }]
+    }, {
+        title: 'Charge point sends response to backend',
+        buttons: [
+          {
+            sendMessage: true
+          }]
+      }, {
+      title: 'Charge point creates a CSR',
+      buttons: [
+        {
+          title: 'Create charge point message',
+          template: 'csms_csr'
+        }]
+    }, {
+      title: 'Charge point sends request to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }, {
+      title: 'The backend provides a response',
+      todo: 'Verify result (Accepted, Rejected)',
+    }, {
+      title: 'The backend provides a new client certificate',
+      todo: 'Verify cert result',
+    }, {
+      title: 'The charge point creates response for certificate',
+      buttons: [
+        {
+          title: 'Accepted',
+          template: 'response_accepted'
+        },
+        {
+          title: 'Rejected',
+          template: 'response_rejected'
+        }]
+    }, {
+      title: 'Charge point sends response to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }]
+  }, {
+    name: 'leaf certificate',
+    steps: [{
+      title: 'Charge point has received a trigger message',
+      todo: 'Verify TriggerMessage (SignV2GCertificate)',
+    }, {
+      title: 'Charge point creates response',
+      buttons: [
+        {
+          title: 'Accepted',
+          template: 'response_accepted'
+        },
+        {
+          title: 'Not Implemented',
+          template: 'response_not_implemented'
+        },
+        {
+          title: 'Rejected',
+          template: 'response_rejected'
+        }]
+    }, {
+      title: 'Charge point sends response to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }, {
+      title: 'Charge point creates a CSR',
+      buttons: [
+        {
+          title: 'Create charge point message',
+          template: 'leaf_csr'
+        }]
+    }, {
+      title: 'Charge point sends request to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }, {
+      title: 'The backend provides a response',
+      todo: 'Verify result (Accepted, Rejected)',
+    }, {
+      title: 'The backend provides a new leaf certificate',
+      todo: 'Verify cert result',
+    }, {
+      title: 'The charge point creates response for certificate',
+      buttons: [
+        {
+          title: 'Accepted',
+          template: 'response_accepted'
+        },
+        {
+          title: 'Rejected',
+          template: 'response_rejected'
+        }]
+    }, {
+      title: 'Charge point sends response to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }]
+  }, {
+    name: 'request truststore',
+    steps: [{
+      title: 'Charge point receives request for read certificate in trust store',
+      todo: 'Verify GetInstalledCertificateIdsRequest request received',
+    }, {
+      title: 'Charge point creates response',
+      buttons: [
+        {
+          title: 'Accepted',
+          template: 'truststore_response'
+        },
+        {
+          title: 'Not Found',
+          template: 'truststore_response_notfound'
+        }]
+    }, {
+      title: 'Charge point sends response to backend - Repeat for each request',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }]
+  }, {
+    name: 'install truststore',
+    steps: [{
+      title: 'Charge point receives request for install certificate in trust store',
+      todo: 'Verify InstallCertificate request received',
+    }, {
+      title: 'Charge point creates response',
+      buttons: [
+        {
+          title: 'Accepted',
+          template: 'response_accepted'
+        },
+        {
+          title: 'Failed',
+          template: 'response_failed'
+        }]
+    }, {
+      title: 'Charge point sends response to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }]
+  }, {
+    name: 'update ev certificate',
+    steps: [{
+      title: 'Charge point receives exi request from vehicle',
+      buttons: [
+        {
+          title: 'EXI Request',
+          template: 'exiRequest'
+        }]
+    }, {
+      title: 'Charge point sends exi request to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }, {
+      title: 'The backend provides a new certificate for the vehicle',
+      todo: 'Verify result (Accepted, Failed)'
+    }]
+  }, {
+    name: 'authorize request',
+    steps: [{
+      title: 'Charge point creates authorize request',
+      buttons: [
+        {
+          title: 'Authorize Request',
+          template: 'authorize'
+        }]
+    }, {
+      title: 'Charge point sends authorize request to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }, {
+      title: 'The backend provides a response for authorize request',
+      todo: ' Verify result (Accepted, Blocked)'
+    }]
+  }];
 
   /*
     editor
@@ -130,7 +340,7 @@ export class PncComponent implements OnInit {
     });
   }
 
-  clearAll(){
+  clearAll() {
     this.sessionLogText = '';
     this.reqBodyContent = '';
     this.responseBodyText = '';

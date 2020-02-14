@@ -31,7 +31,7 @@ export class AppComponent {
   constructor(private themeService: NbThemeService, private sidebarService: NbSidebarService,
               public globalVariablesService: GlobalVariablesService) {
 
-    if(!localStorage.getItem('theme')){
+    if(!localStorage.getItem('theme')) {
       localStorage.setItem('theme', this.globalVariablesService.theme);
     }
     this.globalVariablesService.theme = localStorage.getItem('theme');
