@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
 import {GlobalVariablesService} from '../providers/global-variables.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import { $WebSocket } from 'angular2-websocket/angular2-websocket';
+import {$WebSocket} from 'angular2-websocket/angular2-websocket';
 
 import 'brace';
 import 'brace/mode/json';
 import 'brace/theme/solarized_dark';
 import 'brace/theme/xcode';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -35,8 +35,7 @@ export class HomeComponent implements OnInit {
     tabSize: 4,
   };
 
-  constructor( public sanitizer: DomSanitizer, private httpClient: HttpClient,  private readonly router: Router,
-               public globalVariablesService: GlobalVariablesService) {
+  constructor( public sanitizer: DomSanitizer, public globalVariablesService: GlobalVariablesService) {
   }
 
   ngOnInit() {
@@ -69,10 +68,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  registerListeners() {
+  private registerListeners() {
     this.ws.onOpen((evt: Event) => {
       this.globalVariablesService.connected = true;
       console.log('onOpen ', evt);
+      this.globalVariablesService.showToast('Connected =)', 'top-right', 'success');
       this.addToLog('#### ' + this.globalVariablesService.connectionUrl + '\nSocket opened');
     });
 
@@ -123,9 +123,30 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  clearAll(){
+  clearAll() {
     this.sessionLogText = '';
     this.reqBodyContent = '';
     this.responseBodyText = '';
+  }
+
+  authenticate() {
+    if (this.globalVariablesService.connected) {
+      this.connect();
+    } else {
+      this.globalVariablesService.authenticationUrl = '';
+      this.connectBtnTitle = 'Connecting...';
+      const regexUrl = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+
+      if (this.globalVariablesService.connectionUrl.match(regexUrl)) {
+        this.globalVariablesService.authenticationUrl = this.globalVariablesService.connectionUrl;
+
+        setTimeout(() => {
+          this.globalVariablesService.authenticationUrl = '';
+          this.connect();
+        }, 5000);
+      } else {
+        this.connectBtnTitle = 'Connect';
+      }
+    }
   }
 }

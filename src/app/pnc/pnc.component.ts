@@ -1,9 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
 import {GlobalVariablesService} from '../providers/global-variables.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import { $WebSocket } from 'angular2-websocket/angular2-websocket';
+import {$WebSocket} from 'angular2-websocket/angular2-websocket';
 
 import 'brace';
 import 'brace/mode/json';
@@ -72,7 +70,7 @@ export class PncComponent implements OnInit {
       title: 'The backend provides a new client certificate',
       todo: 'Verify cert result',
     }, {
-      title: 'The charge point creates response for certificate',
+      title: 'The charge point creates response for certificate request',
       buttons: [
         {
           title: 'Accepted',
@@ -135,7 +133,7 @@ export class PncComponent implements OnInit {
       title: 'The backend provides a new leaf certificate',
       todo: 'Verify cert result',
     }, {
-      title: 'The charge point creates response for certificate',
+      title: 'The charge point creates response for certificate request',
       buttons: [
         {
           title: 'Accepted',
@@ -250,8 +248,8 @@ export class PncComponent implements OnInit {
     tabSize: 4,
   };
 
-  constructor( public sanitizer: DomSanitizer, private httpClient: HttpClient,  private readonly router: Router,
-               public globalVariablesService: GlobalVariablesService) {
+
+  constructor(public sanitizer: DomSanitizer, public globalVariablesService: GlobalVariablesService) {
   }
 
   ngOnInit() {
@@ -284,10 +282,11 @@ export class PncComponent implements OnInit {
     }
   }
 
-  registerListeners() {
+  private registerListeners() {
     this.ws.onOpen((evt: Event) => {
       this.globalVariablesService.connected = true;
       console.log('onOpen ', evt);
+      this.globalVariablesService.showToast('Connected =)', 'top-right', 'success');
       this.addToLog('#### ' + this.globalVariablesService.connectionUrl + '\nSocket opened');
     });
 
@@ -486,6 +485,27 @@ export class PncComponent implements OnInit {
     }
     if (this.lastMessageId && this.lastMessageId.length > 0) {
       this.reqBodyContent = this.reqBodyContent.replace('LAST_MESSAGE_ID', '"' + this.lastMessageId + '"');
+    }
+  }
+
+  authenticate() {
+    if (this.globalVariablesService.connected) {
+      this.connect();
+    } else {
+      this.globalVariablesService.authenticationUrl = '';
+      this.connectBtnTitle = 'Connecting...';
+      const regexUrl = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+
+      if (this.globalVariablesService.connectionUrl.match(regexUrl)) {
+        this.globalVariablesService.authenticationUrl = this.globalVariablesService.connectionUrl;
+
+        setTimeout(() => {
+          this.globalVariablesService.authenticationUrl = '';
+          this.connect();
+        }, 5000);
+      } else {
+        this.connectBtnTitle = 'Connect';
+      }
     }
   }
 }

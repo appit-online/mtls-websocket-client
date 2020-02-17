@@ -11,10 +11,10 @@
         <div class="row" >
           <div class="col-md-10">
             <input [disabled]="this.globalVariablesService.connected" class="input-col" type="text" [(ngModel)]="this.globalVariablesService.connectionUrl" placeholder="wss://mtls.url.de/connect/device" nbInput fullWidth shape="rectangle">
-            <iframe style="display: none" [src]="sanitizer.bypassSecurityTrustResourceUrl(this.globalVariablesService.connectionUrl.replace('wss', 'https'))"></iframe>
+            <iframe style="display: none" [src]="sanitizer.bypassSecurityTrustResourceUrl(this.globalVariablesService.authenticationUrl.replace('wss', 'https'))"></iframe>
           </div>
           <div class="col-md-2">
-            <button (click)="connect()" style="float: right;" nbButton status="primary" fullWidth><nb-icon icon="flash-outline"></nb-icon> {{connectBtnTitle}}</button>
+            <button (click)="authenticate()" style="float: right;" nbButton status="primary" fullWidth><nb-icon icon="flash-outline"></nb-icon> {{connectBtnTitle}}</button>
           </div>
         </div>
       </nb-card-body>

@@ -11,10 +11,10 @@
         <div class="row" >
           <div class="col-md-10">
             <input [disabled]="this.globalVariablesService.connected" class="input-col" type="text" [(ngModel)]="this.globalVariablesService.connectionUrl" placeholder="wss://mtls.url.de/connect/device" nbInput fullWidth shape="rectangle">
-            <iframe style="display: none" [src]="sanitizer.bypassSecurityTrustResourceUrl(this.globalVariablesService.connectionUrl.replace('wss', 'https'))"></iframe>
+            <iframe style="display: none" [src]="sanitizer.bypassSecurityTrustResourceUrl(this.globalVariablesService.authenticationUrl.replace('wss', 'https'))"></iframe>
           </div>
           <div class="col-md-2">
-            <button (click)="connect()" style="float: right;" nbButton status="primary" fullWidth><nb-icon icon="flash-outline"></nb-icon> {{connectBtnTitle}}</button>
+            <button (click)="authenticate()" style="float: right;" nbButton status="primary" fullWidth><nb-icon icon="flash-outline"></nb-icon> {{connectBtnTitle}}</button>
           </div>
         </div>
       </nb-card-body>
@@ -34,18 +34,18 @@
                 <div class="row">
                   <nb-card class="col-md-12" style="align-items: center;" accent="info">
                     <nb-card-header>
-                        <div class="h4">
+                        <div class="h4" style="color:lightslategrey">
                           {{step.title}}
                         </div>
                     </nb-card-header>
                     <nb-card-body>
-                          <div class="h4">
-                            {{step.todo}}
-                            <span *ngFor="let button of step.buttons">
-                               <button *ngIf="button.sendMessage" (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
-                               <button *ngIf="!button.sendMessage"  style="margin-left: 10px;" (click)="setTemplate(button.template)" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>{{button.title}}</button>
-                            </span>
-                          </div>
+                      <div class="h4">
+                        {{step.todo}}
+                        <span *ngFor="let button of step.buttons">
+                           <button *ngIf="button.sendMessage" (click)="sendBody()" [disabled]="!this.globalVariablesService.connected" style="float: right;" nbButton status="primary" ><nb-icon icon="navigation-2-outline"></nb-icon> {{sendBtnTitle}}</button>
+                           <button *ngIf="!button.sendMessage"  style="margin-left: 10px;" (click)="setTemplate(button.template)" nbButton status="primary" ><nb-icon icon="car-outline"></nb-icon>{{button.title}}</button>
+                        </span>
+                      </div>
                     </nb-card-body>
                   </nb-card>
                 </div>

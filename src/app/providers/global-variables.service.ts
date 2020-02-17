@@ -8,6 +8,7 @@ export class GlobalVariablesService {
   appVersion: string;
   connected: boolean;
   connectionUrl = '';
+  authenticationUrl = '';
   theme = 'default';
   private index = 0;
 
