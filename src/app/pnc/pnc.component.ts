@@ -153,7 +153,7 @@ export class PncComponent implements OnInit {
   }, {
     name: 'request truststore',
     steps: [{
-      title: 'Charge point receives request for read certificate in trust store',
+      title: 'Charge point receives request for read certificate of trust store from backend',
       todo: 'Verify GetInstalledCertificateIdsRequest request received',
     }, {
       title: 'Charge point creates response',
@@ -176,8 +176,8 @@ export class PncComponent implements OnInit {
   }, {
     name: 'install truststore',
     steps: [{
-      title: 'Charge point receives request for install certificate in trust store',
-      todo: 'Verify InstallCertificate request received',
+      title: 'Charge point receives request for install certificate into trust store',
+      todo: 'Verify InstallCertificate request received from backend',
     }, {
       title: 'Charge point creates response',
       buttons: [
