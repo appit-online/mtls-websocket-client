@@ -233,6 +233,22 @@ export class PncComponent implements OnInit {
     }, {
       title: 'The backend provides a response for authorize request',
       todo: ' Verify result (Accepted, Blocked)'
+    }, {
+      title: 'Charge point creates start transaction request',
+      buttons: [
+        {
+          title: 'Authorize Request',
+          template: 'start_transaction'
+        }]
+    },{
+      title: 'Charge point sends start transaction request to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }, {
+      title: 'The backend provides a response for start transaction request',
+      todo: ' Verify result (Accepted, Blocked)'
     }]
   }];
 
@@ -395,7 +411,20 @@ export class PncComponent implements OnInit {
    }
 ]`;
         break;
-
+      case 'start_transaction':
+        this.reqBodyContent = `[
+  2,
+  "${Date.now()}",
+  "StartTransaction",
+  {
+    "connectorId": 1,
+    "idTag": "IDTAG",
+    "meterStart": 1200,
+    "reservationId": 1234,
+    "timestamp": "${new Date().toISOString()}"
+  }
+]`;
+        break;
       case 'truststore_response_notfound':
         this.reqBodyContent = `[
   3,
