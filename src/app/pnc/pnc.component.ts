@@ -27,6 +27,22 @@ export class PncComponent implements OnInit {
   usecases = [{
     name: 'client certificate',
     steps: [{
+      title: 'Charge point creates boot notification',
+      buttons: [
+        {
+          title: 'Create boot notification',
+          template: 'boot_notification_request'
+        }]
+    }, {
+      title: 'Charge point sends request to backend',
+      buttons: [
+        {
+          sendMessage: true
+        }]
+    }, {
+      title: 'Charge point has received a boot notification response',
+      todo: 'Verify BootNotificationMessage (Pending)',
+    }, {
       title: 'Charge point has received an extended trigger message',
       todo: 'Verify ExtendedTriggerMessage (SignChargePointCertificate)',
     }, {
@@ -363,6 +379,18 @@ export class PncComponent implements OnInit {
 
   setTemplate(messageType) {
     switch (messageType) {
+      case 'boot_notification_request':
+        this.reqBodyContent = `[
+  2,
+  "${Date.now()}",
+  "BootNotification",
+  {
+    "chargePointVendor": "manufacturerName",
+    "chargePointModel": "718"
+  }
+]`;
+        break;
+
       case 'authorize':
         this.reqBodyContent = `[
   2,
