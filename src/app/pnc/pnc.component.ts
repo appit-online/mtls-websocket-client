@@ -523,7 +523,7 @@ export class PncComponent implements OnInit {
     } else {
       this.globalVariablesService.authenticationUrl = '';
       this.connectBtnTitle = 'Connecting...';
-      const regexUrl = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+      const regexUrl = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*(\.[a-z]{2,5})*(:[0-9]{1,5})?(\/.*)?$/i;
 
       if (this.globalVariablesService.connectionUrl.match(regexUrl)) {
         if (this.globalVariablesService.connectionUrl.indexOf('localhost') === -1 &&
