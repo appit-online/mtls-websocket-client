@@ -526,8 +526,8 @@ export class PncComponent implements OnInit {
       const regexUrl = /[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
 
       if (this.globalVariablesService.connectionUrl.match(regexUrl)) {
-        if (this.globalVariablesService.connectionUrl.indexOf('localhost') !== -1 &&
-            this.globalVariablesService.connectionUrl.indexOf('127.0.0.1') !== -1 ) {
+        if (this.globalVariablesService.connectionUrl.indexOf('localhost') === -1 &&
+            this.globalVariablesService.connectionUrl.indexOf('127.0.0.1') === -1 ) {
             this.globalVariablesService.authenticationUrl = this.globalVariablesService.connectionUrl;
         }
 
