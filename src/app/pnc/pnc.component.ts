@@ -253,7 +253,7 @@ export class PncComponent implements OnInit {
       title: 'Charge point creates start transaction request',
       buttons: [
         {
-          title: 'Authorize Request',
+          title: 'Start Transaction Request',
           template: 'start_transaction'
         }]
     },{
